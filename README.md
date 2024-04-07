@@ -1,5 +1,8 @@
 # Advanced Machine Learning Project
-
+--------------------------------------------
+<p align="center">
+ <a href="https://www.python.org/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/python/python-icon.svg" alt="python" width="40" height="40"/> </a><a href="https://www.python.org/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/python/python-icon.svg" alt="python" width="40" height="40"/> </a>
+</p>
 this is a project on the Advanced Machine Learning Course section and we focus on applying (Regression and  Classification) Models on real-applied data 
 
 ## Focus on:
