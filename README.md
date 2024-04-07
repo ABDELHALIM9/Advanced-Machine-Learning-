@@ -1,7 +1,15 @@
 # Advanced Machine Learning Project
 --------------------------------------------
 <p align="center">
- <a href="https://www.python.org/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/python/python-icon.svg" alt="python" width="40" height="40"/> </a><a href="https://www.python.org/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/python/python-icon.svg" alt="python" width="40" height="40"/> </a>
+ <a style="margin-right:30px;" href="https://www.python.org/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/python/python-icon.svg" alt="python" width="40" height="40"/> </a>
+ <a href="#" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/visualstudio_code/visualstudio_code-icon.svg" alt="VScode" width="40" height="40"/> </a>
+ <a href="#" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/kaggle/kaggle-icon.svg" alt="Kaggle" width="40" height="40"/> </a>
+ <a href="#" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/gilbarbara/logos/main/logos/matplotlib-icon.svg" alt="Matplotlib" width="40" height="40"/> </a>
+ <a href="#" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/gilbarbara/logos/main/logos/numpy.svg" alt="NumPy" width="40" height="40"/> </a>
+  <a href="#" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/gilbarbara/logos/main/logos/seaborn-icon.svg" alt="seaborn" width="40" height="40"/> </a>
+   <a href="#" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/scikitlearn/scikitlearn-original.svg" alt="scikit-Learn" width="40" height="40"/> </a>
+   <a href="#" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/gilbarbara/logos/main/logos/tensorflow.svg" alt="tensorflow" width="40" height="40"/> </a>
+   <a href="#" target="_blank" rel="noreferrer"> <img src="https://miro.medium.com/v2/resize:fit:720/1*yhE3CBwTrlXcAIvNJNTQiA.png" alt="xgboost" width="40" height="40"/> </a>
 </p>
 this is a project on the Advanced Machine Learning Course section and we focus on applying (Regression and  Classification) Models on real-applied data 
 
@@ -25,7 +33,7 @@ this is a project on the Advanced Machine Learning Course section and we focus o
 - Matplotlib library
 - NumPy library
 - Seaborn library
-- sklearn library
+- scikit-Learn library
 - tensorflow
 - xgboost
 
