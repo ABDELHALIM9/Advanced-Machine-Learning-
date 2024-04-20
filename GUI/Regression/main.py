@@ -6,12 +6,17 @@ from tkinter import messagebox
 
 #  functions ay kalam for model predictions
 def predict_decision_tree(values):
+    #start here the fitting the data and know the accurecy
     return 300000
 
 def predict_svm(values):
+    #start here the fitting the data and know the accurecy
+
     return 280000
 
 def predict_ann(values):
+    #start here the fitting the data and know the accurecy
+
     return 320000
 
 root = Tk()
