@@ -15,15 +15,15 @@ import joblib
 
 
 
-    #  functions ay kalam for model predictions
 
+'''
 def predict_decision_tree(values):
     # load model 
     with open(r'D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\Regression/model_DT','rb') as file:
         DT_model = pickle.load(file) # model is loaded into : ourModel
     predictions = DT_model.predict(values)
     return predictions
-
+'''
    
 def predict_svm(values):
     # load model 
@@ -96,13 +96,13 @@ def display_prices():
     print(500*"-")
     print(df)
     # Predict prices using each model
-    decision_tree_price = predict_decision_tree(df)
+    #decision_tree_price = predict_decision_tree(df)
     svm_price = predict_svm(df)
     ann_price = predict_ann(df)
 
     # Display predicted prices
 
-    decision_tree_label.config(text=f"DecisionTree Price: {decision_tree_price}")
+    #decision_tree_label.config(text=f"DecisionTree Price: {decision_tree_price}")
     svm_label.config(text=f"SVM Price: {svm_price}")
     ann_label.config(text=f"ANN Price: {ann_price}")
 
@@ -112,11 +112,12 @@ submit_button = Button(root, text="Submit", command=display_prices)
 submit_button.pack(pady=20)
 
 # Frames to display predicted prices for each model
+'''
 decision_tree_frame = Frame(root)
 decision_tree_frame.pack(fill=X, padx=20, pady=5)
 decision_tree_label = Label(decision_tree_frame, text="DecisionTree Price: ", width=20, anchor='w')
 decision_tree_label.pack(side=LEFT)
-
+'''
 svm_frame = Frame(root)
 svm_frame.pack(fill=X, padx=20, pady=5)
 svm_label = Label(svm_frame, text="SVM Price: ", width=20, anchor='w')
