@@ -1,19 +1,15 @@
-import sys
+#from sklearn.tree import DecisionTreeRegressor
 from tkinter import *
-import pandas as pd
+import numpy as np
+import pandas as pd 
 import pickle
-from tkinter import messagebox
+from sklearn.preprocessing import StandardScaler
 from tensorflow import keras
 from keras.models import load_model
-import tensorflow as tf
+#import tensorflow as tf
 from sklearn.preprocessing import PowerTransformer
 from sklearn.preprocessing import  StandardScaler
-from sklearn.tree import DecisionTreeRegressor
 import joblib
-
-
-
-
 
 '''
 def predict_decision_tree(values):
@@ -23,7 +19,14 @@ def predict_decision_tree(values):
     predictions = DT_model.predict(values)
     return predictions
 '''
-   
+
+# Labels
+labels = ['sqft_living', 'sqft_lot','sqft_basement', 'yr_built', 
+          'lat', 'long', 'grade', 'condition', 
+          'floors', 'bathrooms', 'bedrooms']
+
+label_entries = {}
+
 def predict_svm(values):
     # load model 
     with open(r'D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\Regression/model_SVM','rb') as file:
@@ -38,6 +41,23 @@ def predict_ann(values):
     y_pred = model.predict(values)
     return y_pred[0][0]
 
+# pre-processing 
+def preprocessing(df):
+    scaler = StandardScaler()
+    scaled_df = scaler.fit_transform(df)
+    transformer = PowerTransformer(method = "yeo-johnson")
+    transformed_df = transformer.fit_transform(scaled_df)
+    return transformed_df
+
+def PriceScaleTra(price):
+    transformer = PowerTransformer(method = "yeo-johnson")
+    price_reshaped = np.array(price).reshape(1, -1)
+    inverse_transformed_value = transformer.inverse_transform(price_reshaped)
+    # Then, inverse transform using the StandardScaler
+    scaler = StandardScaler()
+    final_predicted_value = scaler.inverse_transform(inverse_transformed_value)
+    return final_predicted_value
+
 root = Tk()
 root.title("House Price Prediction")
 root.geometry("550x600")
@@ -50,12 +70,7 @@ def center_window(frame):
     y = (frame.winfo_screenheight() // 2) - (height // 2)
     frame.geometry('{}x{}+{}+{}'.format(width, height, x, y))
     
-# Labels
-labels = ['sqft_living', 'sqft_lot','sqft_basement', 'yr_built', 
-          'lat', 'long', 'grade', 'condition', 
-          'floors', 'bathrooms', 'bedrooms']
 
-label_entries = {}
 
 for i in range(0, len(labels), 2):
     label_frame = Frame(root)
@@ -71,14 +86,6 @@ for i in range(0, len(labels), 2):
             entry.grid(row=0, column=j*2+1, padx=5,sticky='ew')
             
             label_entries[label_text] = entry
-
-# pre-processing 
-def preprocessing(df):
-    scaler = StandardScaler()
-    scaled_df = scaler.fit_transform(df)
-    transformer = PowerTransformer(method = "yeo-johnson")
-    transformed_df = transformer.fit_transform(scaled_df)
-    return transformed_df
 
 
 # Function to calculate predicted prices and display them
@@ -99,11 +106,14 @@ def display_prices():
     svm_price = predict_svm(df)
     ann_price = predict_ann(df)
 
-    # Display predicted prices
+    # inverse the transform 
+    svm_price_tra = PriceScaleTra(svm_price)
+    ann_price_tra = PriceScaleTra(ann_price)
 
+    # Display predicted prices
     #decision_tree_label.config(text=f"DecisionTree Price: {decision_tree_price}")
-    svm_label.config(text=f"SVM Price: {svm_price}")
-    ann_label.config(text=f"ANN Price: {ann_price}")
+    svm_label.config(text=f"SVM Price: {PriceScaleTra(svm_price)}")
+    ann_label.config(text=f"ANN Price: {PriceScaleTra(ann_price)}")
 
 
 # Button to submit values and display predicted prices

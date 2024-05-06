@@ -19,7 +19,6 @@ def predict_ann(values):
 
 # Pre-processing
 def preprocessing(df):
-    
     pass 
 
 
