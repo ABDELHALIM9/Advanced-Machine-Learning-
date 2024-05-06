@@ -6,7 +6,6 @@ from tkinter import messagebox
 from tensorflow import keras
 from keras.models import load_model
 import tensorflow as tf
-from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import PowerTransformer
 from sklearn.preprocessing import  StandardScaler
 from sklearn.tree import DecisionTreeRegressor
@@ -30,14 +29,14 @@ def predict_svm(values):
     with open(r'D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\Regression/model_SVM','rb') as file:
         DT_model = pickle.load(file) # model is loaded into : ourModel
     predictions = DT_model.predict(values)
-    return predictions
+    return predictions[0]
 
 def predict_ann(values):
     #start here the fitting the data and know the accurecy
     model = load_model('D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\Regression/model_ANN.h5')
     print("mega")
     y_pred = model.predict(values)
-    return y_pred
+    return y_pred[0][0]
 
 root = Tk()
 root.title("House Price Prediction")
