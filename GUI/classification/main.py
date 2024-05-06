@@ -1,65 +1,75 @@
 import tkinter as tk
-from tkinter import messagebox
-#from sklearn.externals import joblib
-from tensorflow.keras.models import load_model
-import numpy as np
+from tkinter import Button, Entry, Frame, Label, Toplevel
+import pandas as pd
 import pickle
+from sklearn.preprocessing import StandardScaler, PowerTransformer
+from keras.models import load_model
+
+# Labels
+labels = ['age', 'gender', 'impulse', 'pressure_high', 'pressure_low', 'glucose', 'kcm', 'troponin']
+
+label_entries = {}
+
+def predict_ann(values):
+    model = load_model('D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\classification/ANN.h5')
+    print("model loaded Successfully")
+    predictions = model.predict(values)
+    print(f"model Done Predection Successfully: {int(predictions[0][0])}")
+    return predictions[0]
+
+# Pre-processing
+def preprocessing(df):
+    
+    pass 
 
 
+def display_prediction():
+    values = {}
+    for label_text, entry in label_entries.items():
+        values[label_text] = float(entry.get())
+    data = pd.DataFrame([values])
 
-# Function to predict using SVM
-def predict_svm(data):
-    # Load saved models
-    with open(r'D:\coding\Data_Science\Advanced-Machine-Learning-\classification\SVM_tuned.pkl','rb') as file:
-        svm_model = pickle.load(file) # model is loaded into : ourModel
+    # Predict using ANN
+    ann_prediction = predict_ann(data)
 
-    prediction = svm_model.predict(data)
-    return "classs0.9"
-'''
-# Function to predict using Decision Tree
-def predict_dt(data):
-    # Load saved models
-    dt_model = joblib.load('dt_model.pkl')
-    prediction = dt_model.predict(data)
-    return "classs1.1"
-'''
+    # Create a new window to display results
+    result_window = Toplevel(root)
+    result_window.title("Prediction Results")
+    result_window.geometry("500x100")
 
-'''
-# Function to predict using ANN
-def predict_ann(data):
-    # Load save Models
-    ann_model = load_model('ann_model.h5')
-    prediction = np.argmax(ann_model.predict(data), axis=-1)
-    return "classs1"
-'''
+    # Display ANN prediction
+    ann_result_label = Label(result_window, text=f"ANN Prediction: {ann_prediction[0]}")
+    ann_result_label.pack()
 
-# Function to handle button click event
-def predict_class():
-    # Get input data from GUI
-    input_data = [float(entry1.get()), float(entry2.get())]  # Collect all input fields
-    input_data = np.array(input_data).reshape(1, -1)  # Reshape to fit model input
+    # Combine the predictions and display final result
+    final_result = "You have a heart attack!" if ann_prediction[0] == 1 else "You don't have a heart attack."
+    final_result_label = Label(result_window, text=f"Final Result: {final_result}")
+    final_result_label.pack()
 
-    # Predict using all models
-    svm_pred = predict_svm(input_data)
-    #dt_pred = predict_dt(input_data)
-    #ann_pred = predict_ann(input_data)
-
-    # Display results
-    messagebox.showinfo("Predictions", f"SVM Prediction: {svm_pred}\nDT Prediction: '''{dt_pred}'''\nANN Prediction:''' {ann_pred}'''")
-
-# Tkinter GUI setup
 root = tk.Tk()
-root.title("Model Prediction")
+root.title("Heart Attack Prediction")
+root.geometry("550x200")
 
-# Add input fields
-entry1 = tk.Entry(root)
-entry1.pack()
-entry2 = tk.Entry(root)
-entry2.pack()
-# Add more entries for each feature
+for i in range(0, len(labels), 2):
+    label_frame = Frame(root)
+    label_frame.pack(fill=tk.X, padx=20, pady=5, anchor='center')  # Aligning center on x-axis
 
-# Add predict button
-predict_button = tk.Button(root, text="Predict", command=predict_class)
-predict_button.pack()
+    for j in range(2):
+        if i + j < len(labels):
+            label_text = labels[i + j]
+            label = Label(label_frame, text=label_text, width=15, anchor='center')
+            label.grid(row=0, column=j*2, sticky='w')
+
+            entry = Entry(label_frame)
+            entry.grid(row=0, column=j*2+1, padx=5, sticky='ew')
+
+            label_entries[label_text] = entry
+
+
+# Button to submit values and display result
+submit_button = Button(root, text="Predict", command=display_prediction)
+submit_button.pack(pady=20)
+
+# Rest of your code for UI creation
 
 root.mainloop()

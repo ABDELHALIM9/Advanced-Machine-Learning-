@@ -30,8 +30,9 @@ def predict_svm(values):
 # Function to predict using Artificial Neural Network model
 def predict_ann(values):
     model = load_model('D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\classification/ANN.h5')
-    print("agogogogogogogogogogogo")
+    print("model loaded Successfully")
     predictions = model.predict(values)
+    print("model Done Predection Successfully:")
     print(f"\n{predictions[0][0]}")
     return predictions[0]
 
