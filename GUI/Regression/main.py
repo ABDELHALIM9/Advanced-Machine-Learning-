@@ -59,7 +59,7 @@ def PriceScaleTra(price):
     return final_predicted_value
 
 root = Tk()
-root.title("House Price Prediction")
+root.title("House Price Prediction Regression")
 root.geometry("550x600")
 
 def center_window(frame):

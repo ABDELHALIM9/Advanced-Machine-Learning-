@@ -46,7 +46,7 @@ def display_prediction():
     final_result_label.pack()
 
 root = tk.Tk()
-root.title("Heart Attack Prediction")
+root.title("Heart Attack Classification Prediction")
 root.geometry("550x200")
 
 for i in range(0, len(labels), 2):
