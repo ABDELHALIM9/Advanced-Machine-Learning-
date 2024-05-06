@@ -112,8 +112,8 @@ def display_prices():
 
     # Display predicted prices
     #decision_tree_label.config(text=f"DecisionTree Price: {decision_tree_price}")
-    svm_label.config(text=f"SVM Price: {PriceScaleTra(svm_price)}")
-    ann_label.config(text=f"ANN Price: {PriceScaleTra(ann_price)}")
+    svm_label.config(text=f"SVM Price: {pd.DataFrame({'price':svm_price_tra})}")
+    ann_label.config(text=f"ANN Price: {pd.DataFrame({'price':ann_price_tra})}")
 
 
 # Button to submit values and display predicted prices
