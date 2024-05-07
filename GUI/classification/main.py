@@ -1,36 +1,61 @@
 import tkinter as tk
 from tkinter import Button, Entry, Frame, Label, Toplevel
+import tkinter.messagebox
 import pandas as pd
-import pickle
-from sklearn.preprocessing import StandardScaler, PowerTransformer
+import numpy as np
+from sklearn.preprocessing import StandardScaler, PowerTransformer,LabelEncoder, scale,StandardScaler
 from keras.models import load_model
+
 
 # Labels
 labels = ['age', 'gender', 'impulse', 'pressure_high', 'pressure_low', 'glucose', 'kcm', 'troponin']
 
 label_entries = {}
 
+
 def predict_ann(values):
     model = load_model('D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\classification/ANN.h5')
     print("model loaded Successfully")
     predictions = model.predict(values)
-    print(f"model Done Predection Successfully: {int(predictions[0][0])}")
+    print(f"model Done Predection Successfully: {predictions[0][0]}")
     return predictions[0]
+
+# Data Scaling 
+scaler = StandardScaler()
+def scaling(df):
+    scaled_df = scaler.fit_transform(df)
+    return scaled_df
+
+#Log transformation
+def log_transform(df,col_name):
+  col_transformed = np.log(df[col_name])
+  return  col_transformed
+
 
 # Pre-processing
 def preprocessing(df):
-    pass 
+    df.glucose = log_transform(df,'glucose')
+    df.kcm = log_transform(df,'kcm')
+    df.troponin =  log_transform(df,'troponin')
+    df_done = scaling(df)
+    return df_done 
 
 
 def display_prediction():
     values = {}
     for label_text, entry in label_entries.items():
+        value = entry.get()
+        if not value:  # Check if the entry is empty
+            # Display a message and return
+            tk.messagebox.showwarning("Warning", "Please fill in all values.")
+            return
         values[label_text] = float(entry.get())
     data = pd.DataFrame([values])
-
+    print(f"values of input: \n{data}")
+    #df = preprocessing(data)
     # Predict using ANN
     ann_prediction = predict_ann(data)
-
+    print(f"the prediction:\n{data}")
     # Create a new window to display results
     result_window = Toplevel(root)
     result_window.title("Prediction Results")
@@ -41,7 +66,7 @@ def display_prediction():
     ann_result_label.pack()
 
     # Combine the predictions and display final result
-    final_result = "You have a heart attack!" if ann_prediction[0] == 1 else "You don't have a heart attack."
+    final_result = "You have a heart attack!" if ann_prediction[0] >= 1 else "You don't have a heart attack."
     final_result_label = Label(result_window, text=f"Final Result: {final_result}")
     final_result_label.pack()
 

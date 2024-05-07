@@ -1,5 +1,7 @@
 #from sklearn.tree import DecisionTreeRegressor
 from tkinter import *
+import tkinter as tk
+import tkinter.messagebox
 import numpy as np
 import pandas as pd 
 import pickle
@@ -60,7 +62,7 @@ def PriceScaleTra(price):
 
 root = Tk()
 root.title("House Price Prediction Regression")
-root.geometry("550x600")
+root.geometry("550x400")
 
 def center_window(frame):
     frame.update_idletasks()
@@ -92,6 +94,11 @@ for i in range(0, len(labels), 2):
 def display_prices():
     values = {}
     for label_text, entry in label_entries.items():
+        value = entry.get()
+        if not value:  # Check if the entry is empty
+            # Display a message and return
+            tk.messagebox.showwarning("Warning", "Please fill in all values.")
+            return
         values[label_text] = entry.get()
     data = pd.DataFrame([values])
     print(data)
