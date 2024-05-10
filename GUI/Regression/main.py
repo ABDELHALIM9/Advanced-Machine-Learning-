@@ -1,25 +1,12 @@
-#from sklearn.tree import DecisionTreeRegressor
 from tkinter import *
 import tkinter as tk
 import tkinter.messagebox
 import numpy as np
 import pandas as pd 
 import pickle
-#from sklearn.preprocessing import StandardScaler
 from tensorflow import keras
 from keras.models import load_model
-#import tensorflow as tf
-from sklearn.preprocessing import PowerTransformer
-import joblib
 
-'''
-def predict_decision_tree(values):
-    # load model 
-    with open(r'D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\Regression/model_DT','rb') as file:
-        DT_model = pickle.load(file) # model is loaded into : ourModel
-    predictions = DT_model.predict(values)
-    return predictions
-'''
 
 # Labels
 labels = ['sqft_living', 'sqft_lot','sqft_basement', 'yr_built', 

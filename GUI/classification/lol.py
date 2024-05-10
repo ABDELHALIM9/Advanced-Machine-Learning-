@@ -1,6 +1,3 @@
-import tkinter as tk
-from tkinter import Button, Entry, Frame, Label, Toplevel
-import tkinter.messagebox
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
@@ -27,10 +24,10 @@ values_positive = {"age": 21,
           "troponin": 0.058269
           }
 
-mymodel = load_model("Advanced-Machine-Learning-\GUI\classification\ANN.h5")
+mymodel = load_model("GUI\classification\ANN.h5")
 
 # Convert values dictionary to DataFrame
-input_df = pd.DataFrame(values_neative, index=[0])
+input_df = pd.DataFrame(values_positive, index=[0])
 
 scaler = StandardScaler()
 
