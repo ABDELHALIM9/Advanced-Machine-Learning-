@@ -14,13 +14,26 @@ label_entries = {}
 
 '''
 def predict_ann(values):
+<<<<<<< HEAD
     model = load_model("Advanced-Machine-Learning-\GUI\classification\ANN.h5")
+=======
+    model = load_model('GUI\classification\ANN.h5')
+>>>>>>> a2552a21d7a7459291ea193243038006f668d907
     print("model loaded Successfully")
+    threshold = 0.5
     predictions = model.predict(values)
+<<<<<<< HEAD
     print(f"model Done Predection Successfully: {predictions[0][0]}")
     return predictions[0]
 '''
 #Data Scaling 
+=======
+    y_pred_binary = np.where(predictions >= threshold, 1, 0)
+    print(f"model Done Predection Successfully: {predictions}")
+    return y_pred_binary
+
+# Data Scaling 
+>>>>>>> a2552a21d7a7459291ea193243038006f668d907
 scaler = StandardScaler()
 def scaling(df):
     scaled_df = scaler.fit_transform(df)
@@ -31,15 +44,14 @@ def log_transform(df,col_name):
   col_transformed = np.log(df[col_name])
   return  col_transformed
 
-
+'''
 # Pre-processing
 def preprocessing(df):
     df.glucose = log_transform(df,'glucose')
     df.kcm = log_transform(df,'kcm')
     df.troponin =  log_transform(df,'troponin')
-    df_done = scaling(df)
-    return df_done 
-
+    return df 
+'''
 
 def display_prediction():
     values = {}
@@ -55,7 +67,7 @@ def display_prediction():
     #df = preprocessing(data)
     # Predict using ANN
     ann_prediction = predict_ann(data)
-    print(f"the prediction:\n{data}")
+    print(f"the prediction:\n{ann_prediction}")
     # Create a new window to display results
     result_window = Toplevel(root)
     result_window.title("Prediction Results")
