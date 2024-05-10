@@ -5,13 +5,14 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler, PowerTransformer,LabelEncoder, scale,StandardScaler
 from tensorflow.keras.models import load_model # type: ignore
-
+import joblib
 
 # Labels
-labels = ['age', 'gender', 'impulse', 'pressure_high', 'pressure_low', 'glucose', 'kcm', 'troponin']
+labels = ['age', 'gender', 'impluse', 'pressurehight', 'pressurelow', 'glucose', 'kcm', 'troponin']
 threshold = 0.5
 
 label_entries = {}
+
 
 # prediction the calssification
 def predict_ann(values):
@@ -23,33 +24,12 @@ def predict_ann(values):
     print(y_pred_binary)
     return y_pred_binary[0]
 
-# Data Scaling 
-scaler = StandardScaler()
-def scaling(df):
-    scaled_df = scaler.fit_transform(df)
-    return scaled_df
-
-#Log transformation
-def log_transform(df,col_name):
-  col_transformed = np.log(df[col_name])
-  return  col_transformed
-
-def scaling(df):
-    scaled_df = scaler.fit_transform(df)
-    return scaled_df
-
-def log_transform(df, col_name):
-    col_transformed = np.log(df[col_name] + 1e-10)  # Adding a small constant to prevent zero or negative values
-    return col_transformed
-
 # Pre-processing
 def preprocessing(df):
-    scaler = StandardScaler()
-    df['glucose'] = log_transform(df, "glucose")
-    df['kcm'] = log_transform(df, "kcm")
-    df['troponin'] = log_transform(df, "troponin")
+    scaler = joblib.load("classification/preprocessing/scaler_2.pkl")
     # Scale the transformed data
-    scaled_df = scaling(df)
+    df[['glucose','kcm','troponin']] = np.log(df[['glucose','kcm','troponin']])
+    scaled_df = scaler.transform(df)
     return scaled_df 
 
 
@@ -83,6 +63,8 @@ def display_prediction():
     final_result = "You have a heart attack!" if ann_prediction >= 0.5 else "You don't have a heart attack."
     final_result_label = Label(result_window, text=f"Final Result: {final_result}")
     final_result_label.pack()
+
+    
 
 root = tk.Tk()
 root.title("Heart Attack Classification Prediction")

@@ -20,14 +20,14 @@ label_entries = {}
 
 def predict_svm(values):
     # load model 
-    with open(r'D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\Regression/model_SVM','rb') as file:
-        DT_model = pickle.load(file) # model is loaded into : ourModel
-    predictions = DT_model.predict(values)
+    with open(r'D:\coding\Data_Science\Advanced-Machine-Learning-\Regression\model_SVM','rb') as file:
+        SVM_model = pickle.load(file) # model is loaded into : ourModel
+    predictions = SVM_model.predict(values)
     return predictions[0]
 
 def predict_ann(values):
     #start here the fitting the data and know the accurecy
-    model = load_model('D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\Regression/model_ANN.h5')
+    model = load_model('D:\coding\Data_Science\Advanced-Machine-Learning-\Regression\model_ANN.h5')
     print("mega")
     y_pred = model.predict(values)
     return y_pred[0][0]
@@ -74,7 +74,7 @@ def center_window(frame):
     frame.geometry('{}x{}+{}+{}'.format(width, height, x, y))
     
 
-
+# frame for arranging the labels and textboxes 
 for i in range(0, len(labels), 2):
     label_frame = Frame(root)
     label_frame.pack(fill=X, padx=20, pady=5, anchor='center')  # Aligning center on x-axis
@@ -110,19 +110,16 @@ def display_prices():
     print(500*"-")
     print(df)
     # Predict prices using each model
-    #decision_tree_price = predict_decision_tree(df)
     svm_price = predict_svm(df)
     ann_price = predict_ann(df)
+    # reverse the value of the price 
     svm_price_inv=rev(svm_price,df)
     ann_price_inv= rev(ann_price,df)
-    # inverse the transform 
-
 
 
     # Display predicted prices
-    #decision_tree_label.config(text=f"DecisionTree Price: {decision_tree_price}")
-    svm_label.config(text=f"SVM Price: {str(svm_price_inv)}")
-    ann_label.config(text=f"ANN Price: {str(ann_price_inv)}")
+    svm_label.config(text=f"SVM Price: {str('%.2f'%svm_price_inv)} $")
+    ann_label.config(text=f"ANN Price: {str('%.2f'%ann_price_inv)} $")
 
 
 # Button to submit values and display predicted prices
@@ -130,12 +127,6 @@ submit_button = Button(root, text="Submit", command=display_prices)
 submit_button.pack(pady=20)
 
 # Frames to display predicted prices for each model
-'''
-decision_tree_frame = Frame(root)
-decision_tree_frame.pack(fill=X, padx=20, pady=5)
-decision_tree_label = Label(decision_tree_frame, text="DecisionTree Price: ", width=20, anchor='w')
-decision_tree_label.pack(side=LEFT)
-'''
 svm_frame = Frame(root)
 svm_frame.pack(fill=X, padx=20, pady=5)
 svm_label = Label(svm_frame, text="SVM Price: ", width=20, anchor='w')
