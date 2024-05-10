@@ -5,12 +5,11 @@ import tkinter.messagebox
 import numpy as np
 import pandas as pd 
 import pickle
-from sklearn.preprocessing import StandardScaler
+#from sklearn.preprocessing import StandardScaler
 from tensorflow import keras
 from keras.models import load_model
 #import tensorflow as tf
 from sklearn.preprocessing import PowerTransformer
-from sklearn.preprocessing import  StandardScaler
 import joblib
 
 '''
@@ -27,7 +26,10 @@ labels = ['sqft_living', 'sqft_lot','sqft_basement', 'yr_built',
           'lat', 'long', 'grade', 'condition', 
           'floors', 'bathrooms', 'bedrooms']
 
+coulmnss = ['price', 'sqft_living', 'sqft_lot', 'sqft_basement',
+       'yr_built', 'lat', 'long']
 label_entries = {}
+
 
 def predict_svm(values):
     # load model 
@@ -45,20 +47,32 @@ def predict_ann(values):
 
 # pre-processing 
 def preprocessing(df):
-    scaler = StandardScaler()
-    scaled_df = scaler.fit_transform(df)
-    transformer = PowerTransformer(method = "yeo-johnson")
-    transformed_df = transformer.fit_transform(scaled_df)
+    copy = df[["grade","condition","floors","bathrooms","bedrooms"]]
+    df['price'] = 0
+    df = df.reindex(columns=coulmnss)
+    with open(r'Regression\preprocessing\transformer_new.pkl','rb') as file:
+        transform = pickle.load(file) # model is loaded into : ourModel
+    with open(r'Regression\preprocessing\scaler_new.pkl','rb') as file:
+        scaler = pickle.load(file) # model is loaded into : ourModel
+    df = scaler.transform(df)
+    transformed_df = transform.transform(df)
+    transformed_df = pd.DataFrame(transformed_df, columns=coulmnss)
+    transformed_df= transformed_df.drop('price',axis =1)
+    transformed_df[['grade','condition','floors','bathrooms','bedrooms']] = copy[['grade','condition','floors','bathrooms','bedrooms']]
     return transformed_df
 
-def PriceScaleTra(price):
-    transformer = PowerTransformer(method = "yeo-johnson")
-    price_reshaped = np.array(price).reshape(1, -1)
-    inverse_transformed_value = transformer.inverse_transform(price_reshaped)
-    # Then, inverse transform using the StandardScaler
-    scaler = StandardScaler()
-    final_predicted_value = scaler.inverse_transform(inverse_transformed_value)
-    return final_predicted_value
+def rev(price, df ):
+    df['price'] = price
+    df = df.reindex(columns=coulmnss)
+    with open(r'Regression\preprocessing\transformer_new.pkl','rb') as file:
+        transform = pickle.load(file) # model is loaded into : ourModel
+    with open(r'Regression\preprocessing\scaler_new.pkl','rb') as file:
+        scaler = pickle.load(file) # model is loaded into : ourModel
+    transformed_df = transform.inverse_transform(df)
+    scaled_df = scaler.inverse_transform(transformed_df)
+    return scaled_df[0][0]
+
+
 
 root = Tk()
 root.title("House Price Prediction Regression")
@@ -112,15 +126,16 @@ def display_prices():
     #decision_tree_price = predict_decision_tree(df)
     svm_price = predict_svm(df)
     ann_price = predict_ann(df)
-
+    svm_price_inv=rev(svm_price,df)
+    ann_price_inv= rev(ann_price,df)
     # inverse the transform 
-    svm_price_tra = PriceScaleTra(svm_price)
-    ann_price_tra = PriceScaleTra(ann_price)
+
+
 
     # Display predicted prices
     #decision_tree_label.config(text=f"DecisionTree Price: {decision_tree_price}")
-    svm_label.config(text=f"SVM Price: {pd.DataFrame({'price':svm_price_tra})}")
-    ann_label.config(text=f"ANN Price: {pd.DataFrame({'price':ann_price_tra})}")
+    svm_label.config(text=f"SVM Price: {str(svm_price_inv)}")
+    ann_label.config(text=f"ANN Price: {str(ann_price_inv)}")
 
 
 # Button to submit values and display predicted prices
