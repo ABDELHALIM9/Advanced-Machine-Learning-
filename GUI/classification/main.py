@@ -4,7 +4,7 @@ import tkinter.messagebox
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler, PowerTransformer,LabelEncoder, scale,StandardScaler
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 
 
 # Labels
@@ -12,17 +12,28 @@ labels = ['age', 'gender', 'impulse', 'pressure_high', 'pressure_low', 'glucose'
 
 label_entries = {}
 
-
+'''
 def predict_ann(values):
+<<<<<<< HEAD
+    model = load_model("Advanced-Machine-Learning-\GUI\classification\ANN.h5")
+=======
     model = load_model('GUI\classification\ANN.h5')
+>>>>>>> a2552a21d7a7459291ea193243038006f668d907
     print("model loaded Successfully")
     threshold = 0.5
     predictions = model.predict(values)
+<<<<<<< HEAD
+    print(f"model Done Predection Successfully: {predictions[0][0]}")
+    return predictions[0]
+'''
+#Data Scaling 
+=======
     y_pred_binary = np.where(predictions >= threshold, 1, 0)
     print(f"model Done Predection Successfully: {predictions}")
     return y_pred_binary
 
 # Data Scaling 
+>>>>>>> a2552a21d7a7459291ea193243038006f668d907
 scaler = StandardScaler()
 def scaling(df):
     scaled_df = scaler.fit_transform(df)
@@ -67,7 +78,7 @@ def display_prediction():
     ann_result_label.pack()
 
     # Combine the predictions and display final result
-    final_result = "You have a heart attack!" if ann_prediction[0] >= 1 else "You don't have a heart attack."
+    final_result = "You have a heart attack!" if ann_prediction[0] >= 0.5 else "You don't have a heart attack."
     final_result_label = Label(result_window, text=f"Final Result: {final_result}")
     final_result_label.pack()
 
