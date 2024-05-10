@@ -4,7 +4,7 @@ import tkinter.messagebox
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler, PowerTransformer,LabelEncoder, scale,StandardScaler
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model # type: ignore
 
 
 # Labels

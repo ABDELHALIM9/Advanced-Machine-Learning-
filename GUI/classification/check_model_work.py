@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model # type: ignore
 
 values_neative = {"age": 64,
           "gender": 1,
