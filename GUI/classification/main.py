@@ -9,31 +9,21 @@ from tensorflow.keras.models import load_model
 
 # Labels
 labels = ['age', 'gender', 'impulse', 'pressure_high', 'pressure_low', 'glucose', 'kcm', 'troponin']
+threshold = 0.5
 
 label_entries = {}
 
-'''
+# prediction the calssification
 def predict_ann(values):
-<<<<<<< HEAD
-    model = load_model("Advanced-Machine-Learning-\GUI\classification\ANN.h5")
-=======
-    model = load_model('GUI\classification\ANN.h5')
->>>>>>> a2552a21d7a7459291ea193243038006f668d907
+    model  = load_model("GUI\classification\ANN.h5")
     print("model loaded Successfully")
-    threshold = 0.5
     predictions = model.predict(values)
-<<<<<<< HEAD
     print(f"model Done Predection Successfully: {predictions[0][0]}")
-    return predictions[0]
-'''
-#Data Scaling 
-=======
     y_pred_binary = np.where(predictions >= threshold, 1, 0)
-    print(f"model Done Predection Successfully: {predictions}")
-    return y_pred_binary
+    print(y_pred_binary)
+    return y_pred_binary[0]
 
 # Data Scaling 
->>>>>>> a2552a21d7a7459291ea193243038006f668d907
 scaler = StandardScaler()
 def scaling(df):
     scaled_df = scaler.fit_transform(df)
@@ -44,14 +34,24 @@ def log_transform(df,col_name):
   col_transformed = np.log(df[col_name])
   return  col_transformed
 
-'''
+def scaling(df):
+    scaled_df = scaler.fit_transform(df)
+    return scaled_df
+
+def log_transform(df, col_name):
+    col_transformed = np.log(df[col_name] + 1e-10)  # Adding a small constant to prevent zero or negative values
+    return col_transformed
+
 # Pre-processing
 def preprocessing(df):
-    df.glucose = log_transform(df,'glucose')
-    df.kcm = log_transform(df,'kcm')
-    df.troponin =  log_transform(df,'troponin')
-    return df 
-'''
+    scaler = StandardScaler()
+    df['glucose'] = log_transform(df, "glucose")
+    df['kcm'] = log_transform(df, "kcm")
+    df['troponin'] = log_transform(df, "troponin")
+    # Scale the transformed data
+    scaled_df = scaling(df)
+    return scaled_df 
+
 
 def display_prediction():
     values = {}
@@ -62,11 +62,13 @@ def display_prediction():
             tk.messagebox.showwarning("Warning", "Please fill in all values.")
             return
         values[label_text] = float(entry.get())
-    data = pd.DataFrame([values])
-    print(f"values of input: \n{data}")
-    #df = preprocessing(data)
+        # Convert values dictionary to DataFrame
+    print(values)
+    input_df = pd.DataFrame(values, index=[0])
+    print(f"values of input: \n{input_df}")
+    df = preprocessing(input_df)
     # Predict using ANN
-    ann_prediction = predict_ann(data)
+    ann_prediction = predict_ann(df)
     print(f"the prediction:\n{ann_prediction}")
     # Create a new window to display results
     result_window = Toplevel(root)
@@ -74,11 +76,11 @@ def display_prediction():
     result_window.geometry("500x100")
 
     # Display ANN prediction
-    ann_result_label = Label(result_window, text=f"ANN Prediction: {ann_prediction[0]}")
+    ann_result_label = Label(result_window, text=f"ANN Prediction: {ann_prediction}")
     ann_result_label.pack()
 
     # Combine the predictions and display final result
-    final_result = "You have a heart attack!" if ann_prediction[0] >= 0.5 else "You don't have a heart attack."
+    final_result = "You have a heart attack!" if ann_prediction >= 0.5 else "You don't have a heart attack."
     final_result_label = Label(result_window, text=f"Final Result: {final_result}")
     final_result_label.pack()
 

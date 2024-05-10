@@ -16,10 +16,10 @@ class MachineLearningApp:
         self.classification_button.pack(pady=5)
 
     def run_regression(self):
-        subprocess.Popen(["python", r"GUI\Regression\main.py"])
+        subprocess.Popen(["conda", "run", "-n", "abdo", "python", r"D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\Regression\main.py"])
 
     def run_classification(self):
-        subprocess.Popen(["python", r"GUI\classification\main.py"])
+        subprocess.Popen(["conda", "run", "-n", "base", "python", r"D:\coding\Data_Science\Advanced-Machine-Learning-\GUI\classification\main.py"])
 
 if __name__ == "__main__":
     root = tk.Tk()

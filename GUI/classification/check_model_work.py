@@ -55,10 +55,11 @@ predictions = mymodel.predict(sc_df)
 
 threshold = 0.5
 y_pred_ann = mymodel.predict(sc_df)
+print(y_pred_ann)
 y_pred_binary = np.where(y_pred_ann >= threshold, 1, 0)
 
-print("Predictions:", predictions)
-print("Predictions:", y_pred_binary)
+print("Predictions:", predictions[0][0])
+print("Predictions:", y_pred_binary[0][0])
 if y_pred_binary[0] == 0:
      print("The patient does not have heart problems")
 else:
