@@ -37,4 +37,4 @@ this is a project on the Advanced Machine Learning Course section and we focus o
 - tensorflow
 - xgboost
 
-![41f05b9a516c6bb1d42a75e1eba940dc.webp](data/41f05b9a516c6bb1d42a75e1eba940dc.webp)
+<p align="center"><img src="media/41f05b9a516c6bb1d42a75e1eba940dc.webp" width=50%></p>
