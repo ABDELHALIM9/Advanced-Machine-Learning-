@@ -9,30 +9,27 @@ from keras.models import load_model
 
 
 # Labels
-labels = ['sqft_living', 'sqft_lot','sqft_basement', 'yr_built', 
-          'lat', 'long', 'grade', 'condition', 
-          'floors', 'bathrooms', 'bedrooms']
+labels = ['sqft_living', 'sqft_lot','sqft_basement', 'yr_built',
+          'lat', 'long', 'grade', 'condition','floors', 'bathrooms', 'bedrooms']
 
-coulmnss = ['price', 'sqft_living', 'sqft_lot', 'sqft_basement',
-       'yr_built', 'lat', 'long']
+coulmnss = ['price', 'sqft_living', 'sqft_lot', 'sqft_basement','yr_built', 'lat', 'long']
 label_entries = {}
 
-
-def predict_svm(values):
-    # load model 
+# models prediction Function
+def predict_svm(values): 
     with open(r'D:\coding\Data_Science\Advanced-Machine-Learning-\Regression\model_SVM','rb') as file:
         SVM_model = pickle.load(file) # model is loaded into : ourModel
+    print("SVM Model Loaded Successfully")
     predictions = SVM_model.predict(values)
     return predictions[0]
 
 def predict_ann(values):
-    #start here the fitting the data and know the accurecy
     model = load_model('D:\coding\Data_Science\Advanced-Machine-Learning-\Regression\model_ANN.h5')
-    print("mega")
+    print("ANN Model Loaded Successfully")
     y_pred = model.predict(values)
     return y_pred[0][0]
 
-# pre-processing 
+# pre-processing function 
 def preprocessing(df):
     copy = df[["grade","condition","floors","bathrooms","bedrooms"]]
     df['price'] = 0
@@ -48,6 +45,7 @@ def preprocessing(df):
     transformed_df[['grade','condition','floors','bathrooms','bedrooms']] = copy[['grade','condition','floors','bathrooms','bedrooms']]
     return transformed_df
 
+# function to reverse the transform to get the real value of price "predection"
 def rev(price, df ):
     df['price'] = price
     df = df.reindex(columns=coulmnss)
@@ -103,16 +101,21 @@ def display_prices():
         values[label_text] = entry.get()
     data = pd.DataFrame([values])
     print(data)
-    print("After pre processing:")
-    print(500*"-")
+    print("Before pre processing:")
+    print(50*"-")
+    print(data)
+
+    #preprocessing operation "Function"
     df = preprocessing(data)
     print("After pre processing:")
-    print(500*"-")
+    print(50*"-")
     print(df)
-    # Predict prices using each model
+
+    # Predict prices for each model (SVM - ANN)
     svm_price = predict_svm(df)
     ann_price = predict_ann(df)
-    # reverse the value of the price 
+
+    # reverse the value of the price "the predction"
     svm_price_inv=rev(svm_price,df)
     ann_price_inv= rev(ann_price,df)
 

@@ -13,13 +13,12 @@ threshold = 0.5
 
 label_entries = {}
 
-
 # prediction the calssification
 def predict_ann(values):
-    model  = load_model("GUI\classification\ANN.h5")
-    print("model loaded Successfully")
+    model  = load_model("classification\ANN.h5")
+    print("ANN model loaded Successfully")
     predictions = model.predict(values)
-    print(f"model Done Predection Successfully: {predictions[0][0]}")
+    print(f"ANN model Done Predection Successfully: {predictions[0][0]}")
     y_pred_binary = np.where(predictions >= threshold, 1, 0)
     print(y_pred_binary)
     return y_pred_binary[0]
@@ -29,10 +28,14 @@ def preprocessing(df):
     scaler = joblib.load("classification/preprocessing/scaler_2.pkl")
     # Scale the transformed data
     df[['glucose','kcm','troponin']] = np.log(df[['glucose','kcm','troponin']])
-    scaled_df = scaler.transform(df)
-    return scaled_df 
+    X_scaled =df[['age', 'impluse', 'pressurehight', 'pressurelow', 'glucose','kcm', 'troponin']]
+    scaled_df = scaler.transform(X_scaled)
+    X_scaled_df = pd.DataFrame(scaled_df, columns=['age', 'impluse', 'pressurehight', 'pressurelow', 'glucose','kcm', 'troponin'])
+    X_scaled_df["gender"] = df["gender"]
+    X_scaled_df = X_scaled_df.reindex(columns=df.columns)
+    return X_scaled_df 
 
-
+# the action to get values and get the prediction
 def display_prediction():
     values = {}
     for label_text, entry in label_entries.items():
@@ -42,26 +45,31 @@ def display_prediction():
             tk.messagebox.showwarning("Warning", "Please fill in all values.")
             return
         values[label_text] = float(entry.get())
-        # Convert values dictionary to DataFrame
-    print(values)
+
+    # Convert values dictionary to DataFrame        
     input_df = pd.DataFrame(values, index=[0])
     print(f"values of input: \n{input_df}")
+
+    # pre-processing the data
     df = preprocessing(input_df)
+    
     # Predict using ANN
     ann_prediction = predict_ann(df)
-    print(f"the prediction:\n{ann_prediction}")
+    
+    print(f"ANN prediction:\n{ann_prediction}")
+    
     # Create a new window to display results
     result_window = Toplevel(root)
     result_window.title("Prediction Results")
     result_window.geometry("500x100")
 
-    # Display ANN prediction
-    ann_result_label = Label(result_window, text=f"ANN Prediction: {ann_prediction}")
+    # Display models prediction
+    ann_result_label = Label(result_window, text=f"ANN Prediction: {ann_prediction[0]}")
     ann_result_label.pack()
-
+     
     # Combine the predictions and display final result
-    final_result = "You have a heart attack!" if ann_prediction >= 0.5 else "You don't have a heart attack."
-    final_result_label = Label(result_window, text=f"Final Result: {final_result}")
+    final_result_ann = "You have a heart attack!" if ann_prediction >= 0.5 else "You don't have a heart attack."
+    final_result_label = Label(result_window, text=f"Final Result: {final_result_ann}")
     final_result_label.pack()
 
     

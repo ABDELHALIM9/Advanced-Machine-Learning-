@@ -1,0 +1,4 @@
+'age',     'gender', 'impluse', 'pressurehight', 'pressurelow', 'glucose', 'kcm', 'troponin'    True Class
+ 64	           1	    66	        160	            83	            160.0	1.80	0.012	     negative
+ 
+ 21   	        1       94          98             	 46 	        296.0	6.75	1.060	     positive
