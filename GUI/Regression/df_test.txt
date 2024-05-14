@@ -1,0 +1,4 @@
+'price','sqft_living', 'sqft_lot','sqft_basement', 'yr_built',  'lat',     'long',      'grade', 'condition','floors', 'bathrooms', 'bedrooms'
+221900    1180         5650        0                 1955      47.5112       -122.257      7          3          1        1                 3
+
+510000.0  1680         8080        0                   1987    47.6168       -122.045      8          3          1         2                3
